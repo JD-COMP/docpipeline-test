@@ -74,6 +74,8 @@ Decorator that enforces authentication on a handler. Wraps functions to require 
 - Original function result if authenticated, otherwise `{"error": "Unauthorized", "status": 401}`.
 
 ### `login(username: str, password: str) -> dict`
+**Endpoint:** `POST /api/auth/login`
+
 Authenticates user and returns JWT token.
 
 **Parameters:**
@@ -84,6 +86,8 @@ Authenticates user and returns JWT token.
 - `{"token": "<jwt_token>"}`
 
 ### `refresh_token(token: str) -> dict`
+**Endpoint:** `POST /api/auth/refresh`
+
 Refreshes an expiring JWT token.
 
 **Parameters:**
@@ -93,6 +97,8 @@ Refreshes an expiring JWT token.
 - `{"token": "<new_jwt_token>"}`
 
 ### `get_current_user(token: str) -> dict`
+**Endpoint:** `GET /api/auth/me`
+
 Gets current authenticated user profile.
 
 **Parameters:**
