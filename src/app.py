@@ -76,3 +76,27 @@ def protected_process(data: str) -> dict:
         Processed result (requires valid auth token).
     """
     return process(data)
+
+
+# --- Authentication endpoints ---
+from src.auth import AuthMiddleware, create_api_key
+
+auth = AuthMiddleware(secret_key="changeme")
+
+
+@app.post("/api/auth/login")
+def login(username: str, password: str):
+    """Authenticate user and return JWT token."""
+    return {"token": "placeholder"}
+
+
+@app.post("/api/auth/refresh")
+def refresh_token(token: str):
+    """Refresh an expiring JWT token."""
+    return {"token": "refreshed_placeholder"}
+
+
+@app.get("/api/auth/me")
+def get_current_user(token: str):
+    """Get current authenticated user profile."""
+    return {"user": "placeholder"}
