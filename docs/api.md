@@ -41,43 +41,62 @@ Processes multiple items in batch.
 **Returns:**
 - List of processed result dictionaries (same format as `process` return value)
 
-### `protected_process(data: str, token: str = "", secret: str = "") -> dict`
-Processes data with authentication required.
+### `protected_process(data: str) -> dict`
+Processes data with authentication required. Uses the `@require_auth` decorator to enforce authentication.
 
 **Parameters:**
 - `data` (str): Input string to process.
-- `token` (str): Authentication token.
-- `secret` (str): Signing secret key for token verification.
 
 **Returns:**
 - Processed result if authenticated, otherwise `{"error": "Unauthorized", "status": 401}`.
 
 ## Authentication
 
-### `create_token(user_id: str, secret: str) -> str`
-Creates a signed authentication token.
+### `AuthMiddleware(secret_key: str)`
+Middleware for handling JWT authentication. Initialize with a secret key to enable token verification across the application.
+
+**Parameters:**
+- `secret_key` (str): Signing secret key for JWT tokens.
+
+### `create_api_key(user_id: str) -> str`
+Creates a new API key for the specified user.
 
 **Parameters:**
 - `user_id` (str): User identifier.
-- `secret` (str): Signing secret key.
 
 **Returns:**
-- Hex-encoded HMAC token string.
-
-### `verify_token(token: str, secret: str) -> dict`
-Verifies and decodes an authentication token.
-
-**Parameters:**
-- `token` (str): The token string to verify.
-- `secret` (str): Signing secret key.
-
-**Returns:**
-- `{"user_id": <str>, "is_valid": <bool>}`
+- API key string.
 
 ### `require_auth(func)`
-Decorator that enforces authentication on a handler.
-
-Wraps functions to require valid authentication tokens. Expects `token` and `secret` keyword arguments when calling the wrapped function.
+Decorator that enforces authentication on a handler. Wraps functions to require valid JWT authentication tokens managed by `AuthMiddleware`.
 
 **Returns:**
 - Original function result if authenticated, otherwise `{"error": "Unauthorized", "status": 401}`.
+
+### `login(username: str, password: str) -> dict`
+Authenticates user and returns JWT token.
+
+**Parameters:**
+- `username` (str): User's username.
+- `password` (str): User's password.
+
+**Returns:**
+- `{"token": "<jwt_token>"}`
+
+### `refresh_token(token: str) -> dict`
+Refreshes an expiring JWT token.
+
+**Parameters:**
+- `token` (str): The current JWT token to refresh.
+
+**Returns:**
+- `{"token": "<new_jwt_token>"}`
+
+### `get_current_user(token: str) -> dict`
+Gets current authenticated user profile.
+
+**Parameters:**
+- `token` (str): Valid JWT token.
+
+**Returns:**
+- `{"user": "<user_info>"}`
