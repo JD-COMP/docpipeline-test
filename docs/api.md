@@ -76,27 +76,33 @@ Decorator that enforces authentication on a handler. Wraps functions to require 
 ### `login(username: str, password: str) -> dict`
 Authenticates user and returns JWT token.
 
+**Endpoint:** `POST /api/auth/login`
+
 **Parameters:**
 - `username` (str): User's username.
 - `password` (str): User's password.
 
 **Returns:**
-- `{"token": "<jwt_token>"}`
+- `{"token": "placeholder"}`
 
 ### `refresh_token(token: str) -> dict`
 Refreshes an expiring JWT token.
+
+**Endpoint:** `POST /api/auth/refresh`
 
 **Parameters:**
 - `token` (str): The current JWT token to refresh.
 
 **Returns:**
-- `{"token": "<new_jwt_token>"}`
+- `{"token": "refreshed_placeholder"}`
 
 ### `get_current_user(token: str) -> dict`
 Gets current authenticated user profile.
+
+**Endpoint:** `GET /api/auth/me`
 
 **Parameters:**
 - `token` (str): Valid JWT token.
 
 **Returns:**
-- `{"user": "<user_info>"}`
+- `{"user": "placeholder"}`
