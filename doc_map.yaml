@@ -1,0 +1,40 @@
+version: "1.0"
+repository:
+  default_branch: "main"
+
+review:
+  skip:
+    labels: ["skip-doc-review", "dependencies"]
+    authors: ["dependabot[bot]"]
+    paths_only: ["tests/**", "*.lock", ".github/**"]
+
+mappings:
+  - code: "src/app.py"
+    docs: ["docs/api.md"]
+    priority: high
+
+  - code: "src/cli.py"
+    docs: ["docs/cli.md"]
+    priority: high
+
+  - code: "src/auth.py"
+    docs: ["docs/api.md", "docs/architecture.md"]
+    priority: high
+
+  - code: "src/config.py"
+    docs: ["docs/architecture.md"]
+    priority: medium
+
+  - code: "src/models.py"
+    docs: ["docs/api.md", "docs/architecture.md"]
+    priority: medium
+
+  - code: "src/**/*.py"
+    docs: ["docs/architecture.md"]
+    priority: low
+
+content_triggers:
+  - pattern: "add_argument|add_subparser"
+    docs: ["docs/cli.md"]
+  - pattern: "class \\w+\\(BaseModel\\)"
+    docs: ["docs/api.md"]
